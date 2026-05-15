@@ -35,8 +35,13 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
+      - name: Grant permission
+        run: chmod +x gradlew
+
       - name: Build with Gradle
-        id: buildWithGradle
+      run: |
+        yes | sdkmanager --licenses || true
+        ./gradlew assembleRelease --stacktrace
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || true
           echo 'android.sdk.channel=3' >> gradle.properties
